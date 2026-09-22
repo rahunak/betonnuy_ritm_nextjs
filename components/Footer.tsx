@@ -11,7 +11,32 @@ const PHONE_CLEAN = "+375292406450";
 export default function Footer() {
   const [form, setForm] = useState({ name: "", phone: "", msg: "" });
   const [sent, setSent] = useState(false);
-  const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSent(true); };
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSending(true);
+    setError("");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+      headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          detail: form.msg,
+          source: "Написать нам (футер)",
+        }),
+      });
+      if (!res.ok) throw new Error();
+      setSent(true);
+    } catch {
+      setError("Не удалось отправить заявку. Позвоните нам: +375 29 240-64-50");
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <footer id="contacts" className="bg-[#111110] grain">
@@ -165,9 +190,14 @@ export default function Footer() {
                     className="w-full bg-transparent border-b border-[#2D2B28] focus:border-[#C41A1A] text-[#EDE8DF] placeholder-[#3a3a3a] pb-2 text-sm outline-none transition-colors font-serif italic resize-none"
                   />
                 </div>
-                <button type="submit"
-                  className="w-full bg-[#C41A1A] hover:bg-[#9C1515] text-white font-display uppercase tracking-widest text-[11px] py-4 transition-colors mt-2">
-                  Отправить заявку
+                {error && (
+                  <div className="border border-[#C41A1A] px-4 py-3 font-sans text-[#C41A1A] text-xs">
+                    {error}
+                  </div>
+                )}
+                <button type="submit" disabled={sending}
+                  className="w-full bg-[#C41A1A] hover:bg-[#9C1515] text-white font-display uppercase tracking-widest text-[11px] py-4 transition-colors mt-2 disabled:opacity-60">
+                  {sending ? "Отправляем..." : "Отправить заявку"}
                 </button>
               </form>
             )}

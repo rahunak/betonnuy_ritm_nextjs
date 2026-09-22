@@ -6,14 +6,39 @@ import { useState } from "react";
 export default function HeroSection() {
   const [form, setForm] = useState({ name: "", phone: "", service: "" });
   const [sent, setSent] = useState(false);
-  const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSent(true); };
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSending(true);
+    setError("");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          detail: form.service,
+          source: "Расчёт стоимости (главная)",
+        }),
+      });
+      if (!res.ok) throw new Error();
+      setSent(true);
+    } catch {
+      setError("Не удалось отправить заявку. Позвоните нам: +375 29 240-64-50");
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <section className="pt-14 min-h-screen bg-[#EDE8DF] grain overflow-hidden relative">
       {/* Giant background number */}
       <div className="absolute right-0 top-8 font-display text-stroke select-none pointer-events-none leading-none"
         style={{ fontSize: "clamp(180px, 28vw, 420px)", opacity: 0.06 }}>
-        14
+        7
       </div>
 
       {/* Red diagonal band */}
@@ -28,7 +53,7 @@ export default function HeroSection() {
             <div className="flex items-center gap-3 mb-8">
               <div className="w-16 h-0.5 bg-[#C41A1A]" />
               <span className="font-sans font-bold uppercase tracking-[0.25em] text-[#C41A1A] text-[10px]">
-                г. Новолукомль · с 2010 года
+                г. Новолукомль · с 2019 года
               </span>
             </div>
 
@@ -70,7 +95,7 @@ export default function HeroSection() {
             {/* Stats row */}
             <div className="mt-12 grid grid-cols-3 border-t-2 border-[#111110] pt-8 gap-px bg-[#C2BAA8]">
               {[
-                { n: "14", unit: "лет", sub: "на рынке" },
+                { n: "7", unit: "лет", sub: "на рынке" },
                 { n: "340", unit: "+", sub: "объектов" },
                 { n: "50", unit: "лет", sub: "гарантия" },
               ].map((s) => (
@@ -137,10 +162,15 @@ export default function HeroSection() {
                       <option className="bg-[#111110]">Подъём дома</option>
                     </select>
                   </div>
+                  {error && (
+                    <div className="border border-[#C41A1A] px-4 py-3 font-sans text-[#C41A1A] text-xs">
+                      {error}
+                    </div>
+                  )}
                   <div className="pt-4">
-                    <button type="submit"
-                      className="w-full bg-[#C41A1A] hover:bg-[#9C1515] text-white font-display uppercase tracking-widest text-[11px] py-4 transition-colors">
-                      Получить расчёт бесплатно
+                    <button type="submit" disabled={sending}
+                      className="w-full bg-[#C41A1A] hover:bg-[#9C1515] text-white font-display uppercase tracking-widest text-[11px] py-4 transition-colors disabled:opacity-60">
+                      {sending ? "Отправляем..." : "Получить расчёт бесплатно"}
                     </button>
                   </div>
                 </form>
@@ -154,7 +184,7 @@ export default function HeroSection() {
       <div className="relative h-48 sm:h-64 overflow-hidden mt-0 border-t-4 border-[#111110]">
         <Image
 
-          src="/images/work_team.jpeg"
+          src="/images/beton-ritm.webp"
           alt="Строительная площадка"
           fill
           sizes="100vw"
@@ -164,7 +194,7 @@ export default function HeroSection() {
         />
         <div className="absolute inset-0 bg-[#EDE8DF]/30 mix-blend-multiply" />
         {/* Overlay text */}
-        <div className="absolute bottom-4 left-8 font-display uppercase tracking-widest text-white text-xs opacity-80">
+        <div className="hidden-below-1000 absolute bottom-4 left-8 font-display uppercase tracking-widest text-white text-xs opacity-80">
           Новолукомль · Витебская область
         </div>
       </div>

@@ -120,7 +120,7 @@ export default function ServicesPage() {
           </h2>
           <div className="font-serif text-[#2D2B28] leading-relaxed space-y-4 [&_a]:text-[#C41A1A] [&_a]:underline [&_a]:underline-offset-4">
             <p>
-              Бригада «Бетонный Ритм» с 2010 года выполняет <Link href="/uslugi/podem-domov">подъём домов
+              Бригада «Бетонный Ритм» с 2019 года выполняет <Link href="/uslugi/podem-domov">подъём домов
               домкратами</Link> в Витебске, Орше, Полоцке, Новолукомле и по всей Витебской области.
               Поднимаем деревянные срубы, бани, дачные и кирпичные дома весом до 250 тонн —
               целиком, с печкой и пристройками, без повреждения стен и отделки.

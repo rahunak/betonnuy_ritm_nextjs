@@ -1,5 +1,23 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Уведомления о заявках в Telegram
+
+Заявки из форм на сайте («Расчёт стоимости» в шапке и «Написать нам» в футере)
+отправляются POST-запросом на `/api/lead`, а сервер пересылает их боту Telegram.
+
+Настройка:
+
+1. Скопируйте `.env.example` в `.env.local`:
+   ```bash
+   cp .env.example .env.local
+   ```
+2. Создайте бота у [@BotFather](https://t.me/BotFather) (команда `/newbot`) и вставьте токен в `TELEGRAM_BOT_TOKEN`.
+3. Добавьте бота в нужный чат/канал (или напишите ему `/start`), затем откройте
+   `https://api.telegram.org/bot<ТОКЕН>/getUpdates` и возьмите `chat.id` → `TELEGRAM_CHAT_ID`.
+4. Перезапустите dev-сервер. Для продакшена задайте переменные в окружении хостинга.
+
+Без настроенных переменных формы покажут ошибку, а сервер залогирует причину.
+
 ## Getting Started
 
 First, run the development server:

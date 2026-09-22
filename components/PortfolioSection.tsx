@@ -36,8 +36,11 @@ export default function PortfolioSection() {
           {portfolio.map((item, i) => (
             <div
               key={i}
-              className={`group relative overflow-hidden bg-[#C2BAA8] ${i === 0 ? "sm:col-span-2 lg:col-span-1" : ""}`}
-              style={{ aspectRatio: i === 0 ? "16/9" : "4/3" }}
+              className={`group relative overflow-hidden bg-[#C2BAA8] ${
+                i === 0
+                  ? "sm:col-span-2 aspect-video lg:aspect-[4/3]"
+                  : "aspect-[4/3]"
+              }`}
             >
               <Image
                 src={item.img}

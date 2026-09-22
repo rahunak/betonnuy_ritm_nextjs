@@ -81,6 +81,16 @@ h5 {
   transform: rotate(180deg);
 }
 
+/* Скрыто на экранах уже 1000px, видно на 1000px и шире */
+.hidden-below-1000 {
+  display: none;
+}
+@media (min-width: 1000px) {
+  .hidden-below-1000 {
+    display: block;
+  }
+}
+
 input,
 textarea,
 select {
