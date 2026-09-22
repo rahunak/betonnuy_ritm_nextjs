@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const PHONE = "+375 29 240-64-50";
@@ -16,6 +17,10 @@ const NAV = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Якоря (#advantage, #portfolio) существуют только на главной — на внутренних страницах скрываем их
+  const navItems = NAV.filter(([href]) => !href.startsWith("#") || pathname === "/");
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#EDE8DF]/96 backdrop-blur-sm border-b-4 border-[#111110]">
@@ -39,7 +44,7 @@ export default function Header() {
 
         {/* Nav desktop */}
         <nav className="hidden md:flex items-center gap-8 font-sans font-bold uppercase tracking-[0.15em] text-[11px] text-[#8A8074]">
-          {NAV.map(([href, label]) => (
+          {navItems.map(([href, label]) => (
             <Link key={href} href={href} className="hover:text-[#C41A1A] transition-colors border-b border-transparent hover:border-[#C41A1A] pb-0.5">
               {label}
             </Link>
@@ -65,7 +70,7 @@ export default function Header() {
       {open && (
         <div className="md:hidden bg-[#EDE8DF] border-t-2 border-[#111110] px-6 py-5 space-y-4">
           <a href={`tel:${PHONE_CLEAN}`} className="block font-display text-[#C41A1A] text-lg">{PHONE}</a>
-          {NAV.map(([href, label]) => (
+          {navItems.map(([href, label]) => (
             <Link key={href} href={href} onClick={() => setOpen(false)} className="block font-display uppercase tracking-widest text-sm text-[#111110] hover:text-[#C41A1A]">{label}</Link>
           ))}
         </div>
