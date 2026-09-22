@@ -7,14 +7,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // Технические пути закрыты от обхода
+        // Технические пути закрыты от обхода.
+        // Googlebot и YandexImages наследуют эти правила,
+        // т.к. для них нет собственных групп.
         disallow: [...TECHNICAL_PATHS],
-      },
-      // Next.js image-оптимизатор нужен Google для рендеринга страниц —
-      // разрешаем его роботу явно, несмотря на общий запрет /_next/
-      {
-        userAgent: "Googlebot",
-        allow: "/_next/image",
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,

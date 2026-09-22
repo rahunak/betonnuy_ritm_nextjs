@@ -12,13 +12,14 @@ export const metadata: Metadata = {
     canonical: "/uslugi",
   },
   openGraph: {
-    title: "Услуги Бетонного Ритма — фундаменты и подъём домов",
+    title: "Услуги Бетонного Ритма — подъём домов, замена фундамента, монолитные работы",
     description:
       "Подъём домов, замена фундамента, усиление фундамента, монолитные работы. Витебск, Витебская область, Беларусь.",
     url: "/uslugi",
     type: "website",
     siteName: "Бетонный Ритм",
     locale: "ru_BY",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
 };
 

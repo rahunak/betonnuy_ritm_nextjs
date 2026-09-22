@@ -1,4 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Это сайт на [Next.js](https://nextjs.org), созданный с помощью [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## SEO
+
+- **Метаданные и OG** — задаются через Metadata API Next.js (`app/layout.tsx`, `app/uslugi/page.tsx`, `app/uslugi/[slug]/page.tsx`): title, description, canonical, Open Graph, Twitter-карточки.
+- **OG-картинка** — генерируется динамически (`app/opengraph-image.tsx`) и автоматически подставляется во все страницы через `og:image` / `twitter:image`.
+- **JSON-LD** — Service + FAQPage + BreadcrumbList на страницах услуг,ItemListOfServices на `/uslugi`.
+- **robots.txt и sitemap.xml** — генерируются из `app/robots.ts` и `app/sitemap.ts`; технические пути (`/api/`, `/_next/` и т.д.) закрыты в robots и не попадают в sitemap.
+- **IndexNow** — мгновенный пинг Яндекс/ Bing при обновлении страниц: ключ лежит в `app/indexnow-key.txt`, отправка — скриптом:
+  ```bash
+  ./scripts/ping-indexnow.sh                        # все URL из sitemap
+  ./scripts/ping-indexnow.sh /uslugi/podem-domov    # конкретные страницы
+  ```
+  Ключ хранится в скрипте; после деплоя убедитесь, что `https://betonniy-ritm.by/indexnow-key.txt` открывается.
 
 ## Уведомления о заявках в Telegram
 

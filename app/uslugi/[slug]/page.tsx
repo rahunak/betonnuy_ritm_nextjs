@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
       siteName: "Бетонный Ритм",
       locale: "ru_BY",
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: service.h1 }],
     },
   };
 }
