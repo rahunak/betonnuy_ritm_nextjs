@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 const PHONE = "+375 29 240-64-50";
 const PHONE_CLEAN = "+375292406450";
 
 const NAV = [
-  ["#services", "Услуги"],
+  ["/uslugi", "Услуги"],
   ["#advantage", "Подъём домов"],
   ["#portfolio", "Портфолио"],
   ["#contacts", "Контакты"],
@@ -39,9 +40,9 @@ export default function Header() {
         {/* Nav desktop */}
         <nav className="hidden md:flex items-center gap-8 font-sans font-bold uppercase tracking-[0.15em] text-[11px] text-[#8A8074]">
           {NAV.map(([href, label]) => (
-            <a key={href} href={href} className="hover:text-[#C41A1A] transition-colors border-b border-transparent hover:border-[#C41A1A] pb-0.5">
+            <Link key={href} href={href} className="hover:text-[#C41A1A] transition-colors border-b border-transparent hover:border-[#C41A1A] pb-0.5">
               {label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -65,7 +66,7 @@ export default function Header() {
         <div className="md:hidden bg-[#EDE8DF] border-t-2 border-[#111110] px-6 py-5 space-y-4">
           <a href={`tel:${PHONE_CLEAN}`} className="block font-display text-[#C41A1A] text-lg">{PHONE}</a>
           {NAV.map(([href, label]) => (
-            <a key={href} href={href} onClick={() => setOpen(false)} className="block font-display uppercase tracking-widest text-sm text-[#111110] hover:text-[#C41A1A]">{label}</a>
+            <Link key={href} href={href} onClick={() => setOpen(false)} className="block font-display uppercase tracking-widest text-sm text-[#111110] hover:text-[#C41A1A]">{label}</Link>
           ))}
         </div>
       )}

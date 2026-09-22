@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import { services } from "@/lib/services";
 
 const PHONE = "+375 29 240-64-50";
 const PHONE_CLEAN = "+375292406450";
@@ -87,6 +89,23 @@ export default function Footer() {
                     @shlaxtenok_artem
                   </a>
                 </div>
+              </div>
+            </div>
+
+            {/* Services links (SEO) */}
+            <div className="mb-10">
+              <div className="font-display text-[#8A8074] uppercase tracking-widest text-[10px] mb-3">Услуги</div>
+              <div className="flex flex-wrap gap-x-6 gap-y-2">
+                {services.map((s) => (
+                  <Link key={s.slug} href={`/uslugi/${s.slug}`}
+                    className="font-serif italic text-[#8A8074] hover:text-[#C41A1A] text-xs transition-colors">
+                    {s.h1}
+                  </Link>
+                ))}
+                <Link href="/uslugi"
+                  className="font-serif italic text-[#8A8074] hover:text-[#C41A1A] text-xs transition-colors">
+                  Все услуги
+                </Link>
               </div>
             </div>
 

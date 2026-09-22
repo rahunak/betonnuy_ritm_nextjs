@@ -19,6 +19,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://betonniy-ritm.by"),
   title: "Бетонный Ритм — подъём домов и замена фундаментов в Новолукомле",
   description:
     "Комплексные работы по подъёму, выравниванию и замене фундаментов жилых и нежилых строений. Выезд геодезиста и смета — бесплатно. г. Новолукомль, Витебская область.",

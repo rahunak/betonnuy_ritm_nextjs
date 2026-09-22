@@ -1,9 +1,5 @@
-const services = [
-  { num: "01", title: "Ленточный фундамент", price: "от 180", unit: "BYN/м.п.", body: "Разметка, земляные работы, опалубка, армирование, заливка М250–М350, гидроизоляция.", tag: "Популярно" },
-  { num: "02", title: "Столбчатый фундамент", price: "от 90", unit: "BYN/шт.", body: "Бурение скважин 200–400 мм, армирование, заливка М200+, обвязка ростверком.", tag: null },
-  { num: "03", title: "Монолитные работы", price: "от 240", unit: "BYN/м³", body: "Перекрытия, плиты, монолитные стены, опалубка любой конфигурации.", tag: null },
-  { num: "04", title: "Ремонт фундамента", price: "от 120", unit: "BYN/м.п.", body: "Диагностика, укрепление, инъектирование трещин, гидроизоляция.", tag: "Срочно" },
-];
+import Link from "next/link";
+import { services } from "@/lib/services";
 
 export default function ServicesSection() {
   return (
@@ -34,8 +30,9 @@ export default function ServicesSection() {
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-px bg-[#2D2B28]">
-          {services.map((s, i) => (
-            <div key={i} className="bg-[#111110] p-8 flex flex-col group hover:bg-[#1A1917] transition-colors relative">
+          {services.map((s) => (
+            <Link key={s.slug} href={`/uslugi/${s.slug}`}
+              className="bg-[#111110] p-8 flex flex-col group hover:bg-[#1A1917] transition-colors relative">
               {s.tag && (
                 <div className="absolute top-0 right-0 bg-[#C41A1A] text-white font-display uppercase tracking-widest text-[9px] px-3 py-1.5">
                   {s.tag}
@@ -49,10 +46,10 @@ export default function ServicesSection() {
 
               <div className="border-t border-[#2D2B28] pt-6 flex-1 flex flex-col gap-4">
                 <h3 className="font-display text-[#EDE8DF] uppercase leading-tight text-base tracking-wide">
-                  {s.title}
+                  {s.h1}
                 </h3>
                 <p className="font-serif text-[#8A8074] italic text-sm leading-relaxed flex-1">
-                  {s.body}
+                  {s.short}
                 </p>
                 <div>
                   <span className="font-display text-[#C41A1A]" style={{ fontSize: "clamp(28px,3vw,40px)" }}>
@@ -60,12 +57,12 @@ export default function ServicesSection() {
                   </span>
                   <span className="font-sans text-[#8A8074] text-xs ml-2 uppercase tracking-wider">{s.unit}</span>
                 </div>
-                <a href="#contacts"
+                <span
                    className="mt-2 border border-[#2D2B28] group-hover:border-[#C41A1A] text-[#8A8074] group-hover:text-[#C41A1A] font-display uppercase tracking-widest text-[10px] py-3 text-center transition-all">
-                  Заказать
-                </a>
+                  Подробнее
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
