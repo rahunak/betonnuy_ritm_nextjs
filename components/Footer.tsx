@@ -30,7 +30,7 @@ export default function Footer() {
           {/* Left */}
           <div>
             {/* Logo */}
-            <div className="flex items-center gap-3 mb-10">
+            <Link href="/" aria-label="Бетонный Ритм — на главную" className="flex items-center gap-3 mb-10">
               <Image
                 src="/images/logo-light.svg"
                 alt="Бетонный Ритм — логотип"
@@ -43,7 +43,7 @@ export default function Footer() {
                 <div className="font-display text-[#EDE8DF] uppercase tracking-widest text-lg">Бетонный Ритм</div>
                 <div className="font-sans text-[#8A8074] uppercase tracking-[0.2em] text-[9px]">Фундаменты · Подъём домов</div>
               </div>
-            </div>
+            </Link>
 
             {/* Info */}
             <div className="space-y-6 border-l-2 border-[#C41A1A] pl-6 mb-10">
