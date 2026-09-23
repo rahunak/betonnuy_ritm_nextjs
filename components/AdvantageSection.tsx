@@ -24,7 +24,7 @@ export default function AdvantageSection() {
               </div>
 
               <h2 className="font-display text-[#111110] uppercase leading-[0.9] mb-8"
-                style={{ fontSize: "clamp(40px,6vw,90px)" }}>
+                style={{ fontSize: "clamp(37px,5.5vw,85px)" }}>
                 Подъём<br />
                 дома<br />
                 <span className="text-stroke-red">с заменой</span><br />
@@ -32,8 +32,11 @@ export default function AdvantageSection() {
               </h2>
 
               <p className="font-serif text-[#2D2B28] italic text-lg leading-relaxed mb-10 max-w-md">
-                Поднимаем строения весом до 250 тонн, демонтируем старый фундамент
-                и заливаем новый — всё за один рабочий сезон. Снос не нужен.
+                Работаем с аварийными домами любой сложности.
+                Производим выравнивание прогнивших углов с заменой венцов и фундамента.
+                Звоните — поможем сохранить ваш дом, либо память о ваших родных и близких.
+                Строим как для своих!
+                С нами — без шума и пыли!
               </p>
 
               {/* Specs */}
