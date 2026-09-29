@@ -286,7 +286,7 @@ export default async function ServicePage({ params }: Props) {
                 Нужен расчёт {service.h1.toLowerCase()}?
               </div>
               <div className="font-serif text-[#8A8074] italic text-sm">
-                Выезд геодезиста бесплатный · Смета за 1 день · Ответим за 30 минут
+                Выезд геодезиста бесплатный · Смета за 1 день · Ответим за 60 минут
               </div>
             </div>
             <Link href="/#contacts"

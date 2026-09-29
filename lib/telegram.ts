@@ -3,17 +3,18 @@
  * Используется только на сервере (route handler / server action).
  *
  * Переменные окружения:
- *   TELEGRAM_BOT_TOKEN   — токен бота (получить у @BotFather)
- *   TELEGRAM_CHAT_ID     — ID основного чата/канала (группа), куда слать уведомления
- *   TELEGRAM_DM_CHAT_IDS — (необязательно) ID личных чатов исполнителей через запятую,
- *                          заявка дублируется каждому из них
+ *   TELEGRAM_BOT_TOKEN — токен бота (получить у @BotFather)
+ *   TELEGRAM_CHAT_ID   — куда слать заявки: один ID или несколько через запятую
+ *                        (группа/канал и/или личные чаты исполнителей)
  *
  * Получить chat_id: добавьте бота в чат/канал (или напишите ему в личку),
  * затем откройте https://api.telegram.org/bot<TOKEN>/getUpdates и найдите "chat":{"id":...}
+ * Для канала ID отрицательный (например -1001234567890).
  *
  * ВАЖНО: бот не может первым написать человеку. Исполнитель должен один раз
  * открыть бота в Telegram и нажать Start (/start), иначе Telegram вернёт
  * 403 Forbidden (bot can't initiate conversation with a user).
+ * Бота также нужно добавить в группу/канал и дать ему право писать туда.
  */
 
 const TELEGRAM_API = "https://api.telegram.org";
@@ -21,9 +22,9 @@ const TELEGRAM_API = "https://api.telegram.org";
 export type LeadNotification = {
   name: string;
   phone: string;
-  /** Вид работ (HeroSection) или сообщение (Footer) */
+  /** Виды работ (HeroSection) или сообщение (Footer) */
   detail?: string;
-  /** Название формы: "Расчёт стоимости (Hero)" | "Написать нам (Footer)" */
+  /** Название формы: "Расчёт стоимости (главная)" | "Написать нам (футер)" */
   source: string;
 };
 
@@ -31,15 +32,14 @@ export function isTelegramConfigured(): boolean {
   return Boolean(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID);
 }
 
-/** Список всех получателей: основная группа + лички исполнителей (без дублей) */
+/** Список получателей из TELEGRAM_CHAT_ID (через запятую), без дублей и пустых значений */
 function getRecipientChatIds(): string[] {
-  const group = process.env.TELEGRAM_CHAT_ID?.trim();
-  const dms = (process.env.TELEGRAM_DM_CHAT_IDS ?? "")
-    .split(",")
-    .map((id) => id.trim())
-    .filter(Boolean);
-
-  return [...new Set([group, ...dms].filter(Boolean) as string[])];
+  return [...new Set(
+    (process.env.TELEGRAM_CHAT_ID ?? "")
+      .split(",")
+      .map((id) => id.trim())
+      .filter(Boolean)
+  )];
 }
 
 export async function sendLeadToTelegram(lead: LeadNotification): Promise<void> {
@@ -50,16 +50,20 @@ export async function sendLeadToTelegram(lead: LeadNotification): Promise<void> 
   }
 
   const text = buildLeadMessage(lead);
-  const chatIds = getRecipientChatIds();
+  const uniqueChatIds = getRecipientChatIds();
+
+  if (uniqueChatIds.length === 0) {
+    throw new Error("Telegram не настроен: TELEGRAM_CHAT_ID пуст");
+  }
 
   // Шлём всем получателям параллельно; падение одной доставки
   // (например, исполнитель не нажал Start) не ломает остальные.
   const results = await Promise.allSettled(
-    chatIds.map((chatId) => sendTelegramMessage(chatId, text))
+    uniqueChatIds.map((chatId) => sendTelegramMessage(chatId, text))
   );
 
   const failures = results.filter((r) => r.status === "rejected");
-  if (failures.length === chatIds.length) {
+  if (failures.length === uniqueChatIds.length) {
     // Не доставлено никому — считаем заявку неотправленной
     throw new Error(
       failures

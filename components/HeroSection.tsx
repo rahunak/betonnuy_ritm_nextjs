@@ -1,13 +1,57 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const WORK_TYPES = [
+  "Ленточный фундамент",
+  "Столбчатый фундамент",
+  "Монолитные работы",
+  "Ремонт фундамента",
+  "Подъём дома",
+];
 
 export default function HeroSection() {
-  const [form, setForm] = useState({ name: "", phone: "", service: "" });
+  const [form, setForm] = useState<{ name: string; phone: string; services: string[] }>({
+    name: "",
+    phone: "",
+    services: [],
+  });
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const servicesRef = useRef<HTMLDivElement>(null);
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+
+  // Закрытие дропдауна по клику вне и по Escape
+  useEffect(() => {
+    if (!servicesOpen) return;
+    const onPointerDown = (e: MouseEvent | TouchEvent) => {
+      if (servicesRef.current && !servicesRef.current.contains(e.target as Node)) {
+        setServicesOpen(false);
+      }
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setServicesOpen(false);
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [servicesOpen]);
+
+  const toggleService = (value: string) => {
+    setForm((prev) => ({
+      ...prev,
+      services: prev.services.includes(value)
+        ? prev.services.filter((s) => s !== value)
+        : [...prev.services, value],
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +64,7 @@ export default function HeroSection() {
         body: JSON.stringify({
           name: form.name,
           phone: form.phone,
-          detail: form.service,
+          detail: form.services.length ? `Виды работ: ${form.services.join(", ")}` : "",
           source: "Расчёт стоимости (главная)",
         }),
       });
@@ -117,7 +161,7 @@ export default function HeroSection() {
               <div className="font-display text-white uppercase text-lg tracking-widest mb-1">
                 Расчёт стоимости
               </div>
-              <div className="font-serif text-[#C2BAA8] text-sm italic mb-6">Ответим за 30 минут</div>
+              <div className="font-serif text-[#C2BAA8] text-sm italic mb-6">Ответим за 60 минут</div>
 
               {sent ? (
                 <div className="py-10 text-center">
@@ -147,20 +191,64 @@ export default function HeroSection() {
                       />
                     </div>
                   ))}
-                  <div>
-                    <label className="font-sans font-bold uppercase tracking-[0.2em] text-[#8A8074] text-[9px] block mb-1.5">Вид работ</label>
-                    <select
-                      value={form.service}
-                      onChange={e => setForm({ ...form, service: e.target.value })}
-                      className="w-full bg-transparent border-b-2 border-[#3a3a3a] focus:border-[#C41A1A] text-white pb-2 text-sm outline-none transition-colors font-sans appearance-none"
+                  <div ref={servicesRef} className="relative">
+                    <label className="font-sans font-bold uppercase tracking-[0.2em] text-[#8A8074] text-[9px] block mb-1.5">Виды работ</label>
+                    <button
+                      type="button"
+                      onClick={() => setServicesOpen(open => !open)}
+                      aria-haspopup="listbox"
+                      aria-expanded={servicesOpen}
+                      className="w-full flex items-center justify-between gap-3 bg-transparent border-b-2 border-[#3a3a3a] focus:border-[#C41A1A] text-left text-white pb-2 text-sm outline-none transition-colors font-sans cursor-pointer"
                     >
-                      <option value="" className="bg-[#111110]">Выберите</option>
-                      <option className="bg-[#111110]">Ленточный фундамент</option>
-                      <option className="bg-[#111110]">Столбчатый фундамент</option>
-                      <option className="bg-[#111110]">Монолитные работы</option>
-                      <option className="bg-[#111110]">Ремонт фундамента</option>
-                      <option className="bg-[#111110]">Подъём дома</option>
-                    </select>
+                      <span className={form.services.length ? "" : "text-[#555550]"}>
+                        {form.services.length === 0
+                          ? "Выберите (можно несколько)"
+                          : form.services.length === 1
+                            ? form.services[0]
+                            : `Выбрано: ${form.services.length}`}
+                      </span>
+                      <svg
+                        width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"
+                        className={`shrink-0 text-[#8A8074] transition-transform ${servicesOpen ? "rotate-180" : ""}`}
+                      >
+                        <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    {servicesOpen && (
+                      <ul
+                        role="listbox"
+                        aria-multiselectable="true"
+                        aria-label="Виды работ"
+                        className="absolute left-0 right-0 top-full mt-2 z-20 bg-[#111110] border border-[#3a3a3a] shadow-[4px_4px_0_#C41A1A]"
+                      >
+                        {WORK_TYPES.map(work => {
+                          const checked = form.services.includes(work);
+                          return (
+                            <li key={work} role="option" aria-selected={checked}>
+                              <button
+                                type="button"
+                                onClick={() => toggleService(work)}
+                                className={`w-full flex items-center gap-3 px-4 py-3 text-left text-sm font-sans transition-colors cursor-pointer ${checked ? "text-[#C41A1A]" : "text-white hover:bg-[#1d1c1a]"}`}
+                              >
+                                <span
+                                  aria-hidden="true"
+                                  className={`w-4 h-4 shrink-0 border flex items-center justify-center transition-colors ${
+                                    checked ? "bg-[#C41A1A] border-[#C41A1A]" : "border-[#555550]"
+                                  }`}
+                                >
+                                  {checked && (
+                                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                      <path d="M1 4l2.5 2.5L9 1" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                  )}
+                                </span>
+                                {work}
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
                   </div>
                   {error && (
                     <div className="border border-[#C41A1A] px-4 py-3 font-sans text-[#C41A1A] text-xs">

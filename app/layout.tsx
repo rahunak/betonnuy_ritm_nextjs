@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Russo_One, Source_Serif_4, Montserrat } from "next/font/google";
 import "./globals.css";
+import YandexMetrika from "@/components/YandexMetrika";
 import { SITE_URL } from "@/lib/services";
 
 const russo = Russo_One({
@@ -45,12 +46,20 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const isProduction = process.env.NODE_ENV === 'production';
+
   return (
     <html
       lang="ru"
       className={`${russo.variable} ${sourceSerif.variable} ${montserrat.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+
+        {/* Яндекс.Метрика — поведенческие факторы Яндекса. Отложенная загрузка,
+            не влияет на TBT. Номер счётчика вписать в components/YandexMetrika.tsx. */}
+        {isProduction && <YandexMetrika enabled={isProduction} />}
+      </body>
     </html>
   );
 }
