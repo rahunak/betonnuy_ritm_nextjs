@@ -36,12 +36,14 @@ export default function GoogleAnalytics({ enabled }: { enabled: boolean }) {
 
     const w = window as GtagWindow
 
-    // Стаб gtag: команды копятся в dataLayer, gtag.js обработает очередь
-    // при загрузке. Вызываем config() и сразу, и после фактической загрузки
-    // скрипта — dataLayer переживёт оба случая, дубль не создаст.
+    // Стаб gtag — РОВНО как в официальном сниппете: функция на `arguments`.
+    // gtag.js распознаёт в очереди только Arguments-объекты. Rest-оператор
+    // (...args) кладёт в dataLayer МАССИВ — gtag.js такие записи молча
+    // игнорирует (проверено: config навсегда остаётся в dataLayer,
+    // page_view не отправляется, Realtime пустой).
     w.dataLayer = w.dataLayer || []
-    w.gtag = function gtag(...args: unknown[]) {
-      w.dataLayer!.push(args)
+    w.gtag = function () {
+      w.dataLayer!.push(arguments)
     }
     w.gtag('js', new Date())
     // БЕЗ config() gtag.js не знает, в какое свойство слать данные:
@@ -58,7 +60,9 @@ export default function GoogleAnalytics({ enabled }: { enabled: boolean }) {
       const script = document.createElement('script')
       script.async = true
       script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID
-      script.onload = () => w.gtag!('config', GA4_ID)
+      // Второй config НЕ нужен: команда уже лежит в очереди и будет
+      // обработана при загрузке gtag.js. Повторный config = повторный
+      // page_view (двойной счёт).
       document.head.appendChild(script)
     }
 
