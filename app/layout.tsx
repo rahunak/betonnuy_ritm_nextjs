@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Russo_One, Source_Serif_4, Montserrat } from "next/font/google";
 import "./globals.css";
 import YandexMetrika from "@/components/YandexMetrika";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { SITE_URL } from "@/lib/services";
 
 const russo = Russo_One({
@@ -59,6 +60,9 @@ export default function RootLayout({
         {/* Яндекс.Метрика — поведенческие факторы Яндекса. Отложенная загрузка,
             не влияет на TBT. Номер счётчика вписать в components/YandexMetrika.tsx. */}
         {isProduction && <YandexMetrika enabled={isProduction} />}
+
+        {/* GA4 — отложенная загрузка. ID вписать в components/GoogleAnalytics.tsx */}
+        {isProduction && <GoogleAnalytics enabled={isProduction} />}
       </body>
     </html>
   );
