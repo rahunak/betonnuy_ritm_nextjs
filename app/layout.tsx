@@ -3,6 +3,7 @@ import { Russo_One, Source_Serif_4, Montserrat } from "next/font/google";
 import "./globals.css";
 import YandexMetrika from "@/components/YandexMetrika";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import PhoneClickTracker from "@/components/PhoneClickTracker";
 import { SITE_URL } from "@/lib/services";
 
 const russo = Russo_One({
@@ -63,6 +64,9 @@ export default function RootLayout({
 
         {/* GA4 — отложенная загрузка. ID вписать в components/GoogleAnalytics.tsx */}
         {isProduction && <GoogleAnalytics enabled={isProduction} />}
+
+        {/* Глобальный трекер кликов по телефонным ссылкам → GA4 tel_click */}
+        {isProduction && <PhoneClickTracker />}
       </body>
     </html>
   );

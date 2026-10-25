@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { services } from "@/lib/services";
+import { trackEvent } from "@/lib/analytics";
 
 const PHONE = "+375 29 240-64-50";
 const PHONE_CLEAN = "+375292406450";
@@ -31,6 +32,8 @@ export default function Footer() {
       });
       if (!res.ok) throw new Error();
       setSent(true);
+      // GA4 — успешная отправка заявки из футера
+      trackEvent("generate_lead", { form: "footer_contact" });
     } catch {
       setError("Не удалось отправить заявку. Позвоните нам: +375 29 240-64-50");
     } finally {

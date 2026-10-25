@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 const WORK_TYPES = [
   "Ленточный фундамент",
@@ -70,6 +71,8 @@ export default function HeroSection() {
       });
       if (!res.ok) throw new Error();
       setSent(true);
+      // GA4 — успешная отправка заявки (расчёт стоимости)
+      trackEvent("generate_lead", { form: "hero_price" });
     } catch {
       setError("Не удалось отправить заявку. Позвоните нам: +375 29 240-64-50");
     } finally {
