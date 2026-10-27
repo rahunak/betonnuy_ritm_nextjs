@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { services } from "@/lib/services";
+import { posts } from "@/lib/blog";
 import { trackEvent } from "@/lib/analytics";
 
 const PHONE = "+375 29 240-64-50";
@@ -133,6 +134,23 @@ export default function Footer() {
                 <Link href="/uslugi"
                   className="font-serif italic text-[#8A8074] hover:text-[#C41A1A] text-xs transition-colors">
                   Все услуги
+                </Link>
+              </div>
+            </div>
+
+            {/* Blog links (SEO) */}
+            <div className="mb-10">
+              <div className="font-display text-[#8A8074] uppercase tracking-widest text-[10px] mb-3">Блог</div>
+              <div className="flex flex-wrap gap-x-6 gap-y-2">
+                {posts.map((p) => (
+                  <Link key={p.slug} href={`/blog/${p.slug}`}
+                    className="font-serif italic text-[#8A8074] hover:text-[#C41A1A] text-xs transition-colors">
+                    {p.shortTitle}
+                  </Link>
+                ))}
+                <Link href="/blog"
+                  className="font-serif italic text-[#8A8074] hover:text-[#C41A1A] text-xs transition-colors">
+                  Все статьи
                 </Link>
               </div>
             </div>

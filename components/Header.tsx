@@ -10,6 +10,7 @@ const PHONE_CLEAN = "+375292406450";
 
 const NAV = [
   ["/uslugi", "Услуги"],
+  ["/blog", "Блог"],
   ["#advantage", "Подъём домов"],
   ["#portfolio", "Портфолио"],
   ["#contacts", "Контакты"],
