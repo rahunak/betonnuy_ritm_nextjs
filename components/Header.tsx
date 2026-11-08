@@ -27,10 +27,10 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#EDE8DF]/96 backdrop-blur-sm border-b-4 border-[#111110]">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 h-14 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link href="/" aria-label="Бетонный Ритм — на главную" className="flex items-center gap-0 shrink-0">
+        <Link href="/" aria-label="Бетонный Ритм: на главную" className="flex items-center gap-0 shrink-0">
           <Image
             src="/images/logo.svg"
-            alt="Бетонный Ритм — логотип"
+            alt="Логотип Бетонный Ритм"
             width={40}
             height={40}
             priority

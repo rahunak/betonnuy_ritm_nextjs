@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { services } from "@/lib/services";
 import { posts } from "@/lib/blog";
+import { cities } from "@/lib/geo";
 import { trackEvent } from "@/lib/analytics";
 
 const PHONE = "+375 29 240-64-50";
@@ -59,10 +60,10 @@ export default function Footer() {
           {/* Left */}
           <div>
             {/* Logo */}
-            <Link href="/" aria-label="Бетонный Ритм — на главную" className="flex items-center gap-3 mb-10">
+            <Link href="/" aria-label="Бетонный Ритм: на главную" className="flex items-center gap-3 mb-10">
               <Image
                 src="/images/logo-light.svg"
-                alt="Бетонный Ритм — логотип"
+                alt="Логотип Бетонный Ритм"
                 width={48}
                 height={48}
                 unoptimized
@@ -155,6 +156,23 @@ export default function Footer() {
               </div>
             </div>
 
+            {/* Geography links (SEO) */}
+            <div className="mb-10">
+              <div className="font-display text-[#8A8074] uppercase tracking-widest text-[10px] mb-3">География</div>
+              <div className="flex flex-wrap gap-x-6 gap-y-2">
+                {cities.map((c) => (
+                  <Link key={c.slug} href={`/goroda/${c.slug}`}
+                    className="font-serif italic text-[#8A8074] hover:text-[#C41A1A] text-xs transition-colors">
+                    {c.name}
+                  </Link>
+                ))}
+                <Link href="/goroda"
+                  className="font-serif italic text-[#8A8074] hover:text-[#C41A1A] text-xs transition-colors">
+                  Все города
+                </Link>
+              </div>
+            </div>
+
             {/* Payment */}
             <div>
               <div className="font-display text-[#8A8074] uppercase tracking-widest text-[10px] mb-3">Форма оплаты</div>
@@ -172,7 +190,7 @@ export default function Footer() {
           {/* Right: Form */}
           <div>
             <div className="font-display text-[#EDE8DF] uppercase tracking-widest text-xl mb-1">Написать нам</div>
-            <div className="font-serif text-[#8A8074] italic text-sm mb-8">Опишите задачу — сделаем бесплатный расчёт</div>
+            <div className="font-serif text-[#8A8074] italic text-sm mb-8">Опишите задачу, и мы сделаем бесплатный расчёт</div>
 
             {sent ? (
               <div className="py-12 text-center border border-[#2D2B28]">

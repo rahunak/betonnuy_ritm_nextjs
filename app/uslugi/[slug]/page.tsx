@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { services, getService, SITE_URL } from "@/lib/services";
+import { services, getService, SITE_URL, type ServiceBlock } from "@/lib/services";
+import { cities } from "@/lib/geo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `/uslugi/${service.slug}`,
     },
     openGraph: {
-      title: service.title,
+      title: `${service.title} | Бетонный Ритм`,
       description: service.description,
       url: `/uslugi/${service.slug}`,
       type: "website",
@@ -32,7 +33,59 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: "ru_BY",
       images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: service.h1 }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${service.title} | Бетонный Ритм`,
+      description: service.description,
+      images: ["/opengraph-image"],
+    },
   };
+}
+
+function ContentBlock({ block }: { block: ServiceBlock }) {
+  switch (block.type) {
+    case "h2":
+      return (
+        <h2 className="font-display text-[#111110] uppercase leading-tight mt-12 mb-4"
+          style={{ fontSize: "clamp(24px,3vw,38px)" }}>
+          {block.text}
+        </h2>
+      );
+    case "h3":
+      return (
+        <h3 className="font-display text-[#111110] uppercase text-base leading-snug mt-8 mb-3">
+          {block.text}
+        </h3>
+      );
+    case "p":
+      return (
+        <p className="font-serif text-[#2D2B28] leading-relaxed mb-5">{block.text}</p>
+      );
+    case "ul":
+      return (
+        <ul className="font-serif text-[#2D2B28] leading-relaxed mb-6 space-y-3">
+          {block.items.map((item, i) => (
+            <li key={i} className="flex gap-3">
+              <span className="w-2 h-2 bg-[#C41A1A] rotate-45 shrink-0 mt-2" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      );
+    case "ol":
+      return (
+        <ol className="font-serif text-[#2D2B28] leading-relaxed mb-6 space-y-3">
+          {block.items.map((item, i) => (
+            <li key={i} className="flex gap-4">
+              <span className="font-display text-[#C41A1A] shrink-0 w-8">{String(i + 1).padStart(2, "0")}</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ol>
+      );
+    default:
+      return null;
+  }
 }
 
 export default async function ServicePage({ params }: Props) {
@@ -51,6 +104,14 @@ export default async function ServicePage({ params }: Props) {
       name: service.h1,
       description: service.description,
       url: `${SITE_URL}/uslugi/${service.slug}`,
+      image: `${SITE_URL}/opengraph-image`,
+      offers: {
+        "@type": "Offer",
+        price: service.priceFrom,
+        priceCurrency: "BYN",
+        availability: "https://schema.org/InStock",
+        url: `${SITE_URL}/uslugi/${service.slug}`,
+      },
       areaServed: [
         { "@type": "City", name: "Витебск" },
         { "@type": "AdministrativeArea", name: "Витебская область" },
@@ -151,7 +212,7 @@ export default async function ServicePage({ params }: Props) {
                   Цены
                 </div>
                 <div className="font-serif text-[#C2BAA8] text-sm italic mb-6">
-                  Точная смета — после бесплатного выезда
+                  Точная смета после бесплатного выезда
                 </div>
                 <div className="space-y-3">
                   {service.priceRows.map((row) => (
@@ -209,6 +270,17 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </section>
 
+      {/* SEO-текст страницы (технологии, случаи, цены) */}
+      {service.content && service.content.length > 0 && (
+        <section className="bg-[#D9D2C5] py-20 grain relative">
+          <div className="max-w-[900px] mx-auto px-8 sm:px-12 relative z-10">
+            {service.content.map((block, i) => (
+              <ContentBlock key={i} block={block} />
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* FAQ */}
       <section className="bg-[#EDE8DF] py-20 grain relative">
         <div className="h-2 bg-[#C41A1A] absolute top-0 left-0 right-0" />
@@ -258,6 +330,14 @@ export default async function ServicePage({ params }: Props) {
               <p className="font-serif text-[#2D2B28] italic leading-relaxed max-w-lg">
                 {service.geo}
               </p>
+              <div className="flex flex-wrap gap-x-5 gap-y-2 mt-6">
+                {cities.map((c) => (
+                  <Link key={c.slug} href={`/goroda/${c.slug}`}
+                    className="font-display uppercase tracking-widest text-[10px] text-[#111110] underline underline-offset-4 decoration-[#C41A1A] hover:text-[#C41A1A] transition-colors">
+                    {c.name}
+                  </Link>
+                ))}
+              </div>
             </div>
 
             <div>

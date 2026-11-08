@@ -6,14 +6,14 @@ import { posts, formatDateRu } from "@/lib/blog";
 import { SITE_URL } from "@/lib/services";
 
 export const metadata: Metadata = {
-  title: "Блог — подъём домов и замена фундамента: технология, цены и советы",
+  title: "Ремонт фундамента и подъём домов: технологии и цены",
   description:
-    "Отвечаем на вопросы владельцев домов: почему проседает угол и дом, как проходит подъём дома с заменой фундамента, можно ли поднимать дом с печкой, замена венцов и сколько это стоит в Беларуси.",
+    "Разбираем ремонт фундамента деревянного и кирпичного дома, подъём домкратами, замену венцов и цены. Пишем по опыту 340+ объектов с 2019 года.",
   alternates: {
     canonical: "/blog",
   },
   openGraph: {
-    title: "Блог Бетонного Ритма — технология подъёма домов и фундаментов",
+    title: "Ремонт фундамента и подъём домов: технологии и цены | Бетонный Ритм",
     description:
       "Технология работ и цены: просевшие углы, подъём домов домкратами, замена фундамента и венцов. Витебск и Беларусь.",
     url: "/blog",
@@ -22,17 +22,41 @@ export const metadata: Metadata = {
     locale: "ru_BY",
     images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ремонт фундамента и подъём домов: технологии и цены | Бетонный Ритм",
+    description:
+      "Технология и цены: ремонт фундамента деревянного и кирпичного дома, просевшие углы, подъём домкратами, замена фундамента и венцов.",
+    images: ["/opengraph-image"],
+  },
 };
 
 export default function BlogPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Главная", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Блог", item: `${SITE_URL}/blog` },
-    ],
-  };
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Главная", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Блог", item: `${SITE_URL}/blog` },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      name: "Блог Бетонного Ритма — ремонт фундамента и подъём домов",
+      url: `${SITE_URL}/blog`,
+      inLanguage: "ru",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      blogPost: posts.map((p) => ({
+        "@type": "BlogPosting",
+        headline: p.title,
+        description: p.description,
+        datePublished: p.date,
+        url: `${SITE_URL}/blog/${p.slug}`,
+      })),
+    },
+  ];
 
   return (
     <main>
@@ -57,13 +81,13 @@ export default function BlogPage() {
           <div className="flex items-center gap-3 mb-6">
             <div className="w-16 h-0.5 bg-[#C41A1A]" />
             <span className="font-sans font-bold uppercase tracking-[0.25em] text-[#C41A1A] text-[10px]">
-              Технология · Цены · Советы хозяину
+              Ремонт фундамента · Подъём домов · Цены
             </span>
           </div>
 
           <h1 className="font-display uppercase leading-[0.9] text-[#111110] mb-6"
             style={{ fontSize: "clamp(38px, 6vw, 92px)" }}>
-            Блог о подъёме домов
+            Блог: ремонт фундамента<br />и подъём домов
           </h1>
 
           <p className="font-serif text-[#2D2B28] text-lg leading-relaxed max-w-2xl mb-8">

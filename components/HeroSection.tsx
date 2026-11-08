@@ -93,6 +93,9 @@ export default function HeroSection() {
       <div className="absolute left-0 w-2 top-14 bottom-0 bg-[#C41A1A]" />
 
       <div className="max-w-[1440px] mx-auto px-8 sm:px-12 pt-16 pb-20 relative z-10">
+        {/* H1 для поиска: визуальный заголовок собран из декоративных блоков */}
+        <h1 className="sr-only">Подъём домов и замена фундамента в Витебске и по всей Беларуси</h1>
+
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-0 lg:gap-16 items-start">
           {/* Left */}
           <div>
@@ -128,8 +131,8 @@ export default function HeroSection() {
             {/* Body */}
             <div className="max-w-xl ml-0 lg:ml-4 mt-8">
               <p className="font-serif text-[#2D2B28] text-lg leading-relaxed mb-6 italic">
-                Комплексные работы по подъёму, выравниванию и замене фундаментов
-                жилых и нежилых строений. Выезд геодезиста и смета — бесплатно.
+                Поднимаем, выравниваем и меняем фундаменты жилых и нежилых строений.
+                Выезд геодезиста и смета бесплатно.
               </p>
               <div className="flex items-center gap-4">
                 <div className="w-3 h-3 bg-[#C41A1A] rotate-45 shrink-0" />

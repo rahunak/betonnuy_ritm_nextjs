@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `/blog/${post.slug}`,
     },
     openGraph: {
-      title: post.title,
+      title: `${post.title} | Бетонный Ритм`,
       description: post.description,
       url: `/blog/${post.slug}`,
       type: "article",
@@ -33,6 +33,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: "Бетонный Ритм",
       locale: "ru_BY",
       images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: post.h1 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} | Бетонный Ритм`,
+      description: post.description,
+      images: ["/opengraph-image"],
     },
   };
 }
@@ -156,12 +162,18 @@ export default async function BlogPostPage({ params }: Props) {
     {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
-      headline: post.h1,
+      headline: post.title,
+      alternativeHeadline: post.h1,
       description: post.description,
       datePublished: post.date,
       dateModified: post.date,
       url: `${SITE_URL}/blog/${post.slug}`,
+      mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
+      image: `${SITE_URL}/opengraph-image`,
+      articleSection: post.tag,
+      keywords: post.keywords.join(", "),
       inLanguage: "ru",
+      isPartOf: { "@id": `${SITE_URL}/#website` },
       author: {
         "@type": "Organization",
         name: "Бетонный Ритм",

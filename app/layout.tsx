@@ -25,24 +25,102 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   // %s подставляет title дочерних страниц; default — если дочерний не задан
+  // Бренд в хвосте добавляется шаблоном: title остаются уникальными на всех
+  // страницах, а новые страницы не требуют ручной дописки бренда.
   title: {
-    default: "Бетонный Ритм — подъём домов и замена фундаментов в Новолукомле",
-    template: "%s — Бетонный Ритм",
+    default: "Подъём домов и замена фундамента в Витебске | Бетонный Ритм",
+    template: "%s | Бетонный Ритм",
   },
   description:
-    "Комплексные работы по подъёму, выравниванию и замене фундаментов жилых и нежилых строений. Выезд геодезиста и смета — бесплатно. г. Новолукомль, Витебская область.",
+    "Подъём домов домкратами, замена и ремонт фундамента, монолитные работы в Витебске и по Беларуси. Выезд геодезиста и смета бесплатно.",
+  applicationName: "Бетонный Ритм",
   openGraph: {
     type: "website",
     locale: "ru_BY",
     url: SITE_URL,
     siteName: "Бетонный Ритм",
-    title: "Бетонный Ритм — подъём домов и замена фундаментов в Витебске и Беларуси",
+    title: "Подъём домов и замена фундамента в Витебске | Бетонный Ритм",
     description:
-      "Подъём домов домкратами, замена фундамента, замена нижних венцов, ремонт и усиление фундамента, монолитные работы. Выезд геодезиста и смета — бесплатно.",
+      "Подъём домов домкратами, замена и ремонт фундамента, монолитные работы в Витебске и по Беларуси. Выезд геодезиста и смета бесплатно.",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Бетонный Ритм — ремонт фундамента и подъём домов в Витебске и Беларуси",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
+    title: "Подъём домов и замена фундамента в Витебске | Бетонный Ритм",
+    description:
+      "Подъём домов, замена и ремонт фундамента, монолитные работы. Витебск и вся Беларусь.",
+    images: ["/opengraph-image"],
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+/** Сайтовые JSON-LD: организация (LocalBusiness) + WebSite — на всех страницах */
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Organization", "HomeAndConstructionBusiness"],
+      "@id": `${SITE_URL}/#organization`,
+      name: "Бетонный Ритм",
+      url: SITE_URL,
+      logo: `${SITE_URL}/images/logo.svg`,
+      image: `${SITE_URL}/opengraph-image`,
+      telephone: "+375292406450",
+      priceRange: "от 120 BYN",
+      foundingDate: "2019",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Новолукомль",
+        addressRegion: "Витебская область",
+        addressCountry: "BY",
+      },
+      areaServed: [
+        { "@type": "City", name: "Витебск" },
+        { "@type": "City", name: "Орша" },
+        { "@type": "City", name: "Полоцк" },
+        { "@type": "City", name: "Новополоцк" },
+        { "@type": "City", name: "Новолукомль" },
+        { "@type": "City", name: "Лепель" },
+        { "@type": "AdministrativeArea", name: "Витебская область" },
+        { "@type": "Country", name: "Беларусь" },
+      ],
+      openingHoursSpecification: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        opens: "08:00",
+        closes: "19:00",
+      },
+      sameAs: [
+        "https://www.instagram.com/shlaxtenok_artem/",
+        "https://t.me/artem_shlaxtenok",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Бетонный Ритм",
+      inLanguage: "ru",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -56,6 +134,10 @@ export default function RootLayout({
       className={`${russo.variable} ${sourceSerif.variable} ${montserrat.variable} antialiased`}
     >
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+        />
         {children}
 
         {/* Яндекс.Метрика — поведенческие факторы Яндекса. Отложенная загрузка,

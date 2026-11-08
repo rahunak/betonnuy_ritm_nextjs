@@ -20,11 +20,11 @@ export default function ServicesSection() {
             </div>
             <h2 className="font-display text-[#EDE8DF] uppercase leading-none"
                 style={{ fontSize: "clamp(36px,6vw,80px)" }}>
-              Что мы<br />строим
+              Что мы<br />делаем
             </h2>
           </div>
           <p className="hidden md:block font-serif text-[#8A8074] italic text-base max-w-xs ml-auto mb-2 leading-relaxed">
-            Точная стоимость — после выезда геодезиста. Замер и смета бесплатно.
+            Точную стоимость называем после выезда геодезиста. Замер и смета бесплатно.
           </p>
         </div>
 

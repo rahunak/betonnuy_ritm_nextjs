@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { services, SITE_URL, isTechnicalPath } from "@/lib/services";
 import { posts } from "@/lib/blog";
+import { cities } from "@/lib/geo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
@@ -22,6 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.7,
     },
+    {
+      url: `${SITE_URL}/goroda`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
   ];
 
   const servicePages: MetadataRoute.Sitemap = services.map((s) => ({
@@ -38,8 +45,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
+  // Гео-страницы городов (Витебск сознательно не вынесен — см. lib/geo.ts)
+  const cityPages: MetadataRoute.Sitemap = cities.map((c) => ({
+    url: `${SITE_URL}/goroda/${c.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
   // Защита: технические пути никогда не попадают в sitemap
-  return [...staticPages, ...servicePages, ...blogPages].filter(
+  return [...staticPages, ...servicePages, ...blogPages, ...cityPages].filter(
     (entry) => !isTechnicalPath(new URL(entry.url).pathname)
   );
 }
