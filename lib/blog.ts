@@ -64,7 +64,7 @@ export const posts: BlogPost[] = [
     tag: "Практика",
     readingTime: 7,
     relatedServices: ["remont-i-usilenie-fundamenta", "fundamenty-pod-klyuch"],
-    relatedPosts: ["gidroizolyaciya-fundamenta-starogo-doma", "prosel-ugol-doma-chto-delat", "remont-fundamenta-kirpichnogo-doma"],
+    relatedPosts: ["gidroizolyaciya-fundamenta-starogo-doma", "drenazh-uchastka-vokrug-doma", "prosel-ugol-doma-chto-delat"],
     blocks: [
       {
         type: "answer",
@@ -198,7 +198,7 @@ export const posts: BlogPost[] = [
     tag: "Ремонт фундамента",
     readingTime: 8,
     relatedServices: ["remont-i-usilenie-fundamenta", "fundamenty-pod-klyuch"],
-    relatedPosts: ["otmostka-vokrug-doma", "remont-fundamenta-derevyannogo-doma", "remont-fundamenta-kirpichnogo-doma"],
+    relatedPosts: ["otmostka-vokrug-doma", "drenazh-uchastka-vokrug-doma", "remont-fundamenta-derevyannogo-doma", "remont-fundamenta-kirpichnogo-doma"],
     blocks: [
       {
         type: "answer",
@@ -775,7 +775,7 @@ export const posts: BlogPost[] = [
     tag: "Цены",
     readingTime: 7,
     relatedServices: ["remont-i-usilenie-fundamenta", "podem-doma-s-zamenoy-fundamenta", "fundamenty-pod-klyuch"],
-    relatedPosts: ["remont-fundamenta-derevyannogo-doma", "remont-fundamenta-kirpichnogo-doma", "skolko-stoit-podnyat-dom-v-belarusi"],
+    relatedPosts: ["lentochnyy-fundament-cena-za-metr", "remont-fundamenta-derevyannogo-doma", "remont-fundamenta-kirpichnogo-doma", "skolko-stoit-podnyat-dom-v-belarusi"],
     blocks: [
       {
         type: "answer",

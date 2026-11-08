@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import ServicesSection from "@/components/ServicesSection";
 import AdvantageSection from "@/components/AdvantageSection";
 import PortfolioSection from "@/components/PortfolioSection";
+import BlogSection from "@/components/BlogSection";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default function Home() {
       <ServicesSection />
       <AdvantageSection />
       <PortfolioSection />
+      <BlogSection />
       <Footer />
     </main>
   );

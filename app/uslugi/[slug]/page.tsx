@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { services, getService, SITE_URL, type ServiceBlock } from "@/lib/services";
 import { cities } from "@/lib/geo";
+import { posts } from "@/lib/blog";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -96,6 +97,10 @@ export default async function ServicePage({ params }: Props) {
   const relatedServices = service.related
     .map((r) => getService(r))
     .filter((s): s is NonNullable<typeof s> => Boolean(s));
+
+  const serviceArticles = posts
+    .filter((post) => post.relatedServices.includes(service.slug))
+    .slice(0, 3);
 
   const jsonLd = [
     {
@@ -358,6 +363,41 @@ export default async function ServicePage({ params }: Props) {
               </div>
             </div>
           </div>
+
+          {/* Статьи по теме */}
+          {serviceArticles.length > 0 && (
+            <div className="mt-16">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-0.5 bg-[#C41A1A]" />
+                <span className="font-sans font-bold uppercase tracking-[0.25em] text-[#C41A1A] text-[10px]">
+                  Статьи по теме
+                </span>
+              </div>
+              <h2 className="font-display text-[#111110] uppercase leading-tight mb-8"
+                style={{ fontSize: "clamp(26px,3.5vw,44px)" }}>
+                Разбираем подробнее
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#8A8074] border border-[#8A8074]">
+                {serviceArticles.map((post) => (
+                  <Link key={post.slug} href={`/blog/${post.slug}`}
+                    className="bg-[#D9D2C5] p-6 flex flex-col hover:bg-[#EDE8DF] transition-colors group">
+                    <div className="font-display text-[#C41A1A] text-[10px] uppercase tracking-widest mb-3">
+                      {post.tag}
+                    </div>
+                    <div className="font-display text-[#111110] uppercase text-sm leading-snug mb-4 group-hover:text-[#C41A1A] transition-colors">
+                      {post.shortTitle}
+                    </div>
+                    <p className="font-serif text-[#2D2B28] text-sm leading-relaxed mb-5">
+                      {post.description}
+                    </p>
+                    <div className="mt-auto font-sans font-bold uppercase tracking-[0.2em] text-[10px] text-[#8A8074]">
+                      {post.readingTime} мин чтения
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* CTA */}
           <div className="mt-16 bg-[#111110] p-8 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
